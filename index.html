@@ -37,9 +37,10 @@ function shift(i,d){
    });
  },78);
 }
-function start(){clearInterval(timer);random();left=LIMIT;document.getElementById("time").textContent="01:30";document.getElementById("p").style.width="100%";draw();timer=setInterval(()=>{left--;document.getElementById("time").textContent=String(Math.floor(Math.max(0,left)/60)).padStart(2,"0")+":"+String(Math.max(0,left)%60).padStart(2,"0");document.getElementById("p").style.width=left/LIMIT*100+"%";if(left<=0)end("TIMP EXPIRAT")},1000)}
+function nextRound(){random();draw()}
+function start(){clearInterval(timer);left=LIMIT;document.getElementById("time").textContent="01:30";document.getElementById("p").style.width="100%";nextRound();timer=setInterval(()=>{left--;document.getElementById("time").textContent=String(Math.floor(Math.max(0,left)/60)).padStart(2,"0")+":"+String(Math.max(0,left)%60).padStart(2,"0");document.getElementById("p").style.width=left/LIMIT*100+"%";if(left<=0)end("TIMP EXPIRAT")},1000)}
 function flash(t){msg.style.display="grid";msg.innerHTML="<div>"+t+"</div>";setTimeout(()=>msg.style.display="none",450)}
-function check(){if(off.every(x=>Math.abs(x)<=12)){if(round===3)end("ACCES ACORDAT");else{round++;flash("RUNDA COMPLETĂ");setTimeout(start,550)}}else{tries--;dots();if(tries<=0)end("ACCES RESPINS");else flash("AMPRENTĂ INCORECTĂ")}}
+function check(){if(off.every(x=>Math.abs(x)<=12)){if(round===3)end("ACCES ACORDAT");else{round++;flash("RUNDA COMPLETĂ");setTimeout(nextRound,550)}}else{tries--;dots();if(tries<=0)end("ACCES RESPINS");else flash("AMPRENTĂ INCORECTĂ")}}
 function end(t){clearInterval(timer);msg.style.display="grid";msg.innerHTML="<div>"+t+"<small>Apasă R pentru un antrenament nou</small></div>"}
 function reset(){round=1;tries=3;msg.style.display="none";start()}document.addEventListener("keydown",e=>{if(e.key==="Enter")check();if(e.key.toLowerCase()==="r")reset()});start();
 </script></body></html>
