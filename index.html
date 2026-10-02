@@ -12,19 +12,29 @@ function shift(i,d){
  const row=scan.children[i], belt=row.querySelector(".belt");
  const W=row.clientWidth||476;
  const start=off[i];
- const exitX=start+d*W;
+
+ // LEFT button (d=-1): current strip exits LEFT.
+ // RIGHT button (d=+1): current strip exits RIGHT.
  belt.style.transition="transform 75ms linear";
- belt.style.transform="translateX("+exitX+"px)";
+ belt.style.transform="translateX("+(start + d*W)+"px)";
+
  setTimeout(()=>{
+   // The new alignment state advances in the SAME visual direction.
    off[i]+=d*48;
-   if(off[i]>216)off[i]-=432;
-   if(off[i]<-216)off[i]+=432;
-   row.innerHTML=svg(off[i]-d*W,i);
+   if(off[i]>216) off[i]-=432;
+   if(off[i]<-216) off[i]+=432;
+
+   // Spawn the same strip fully OUTSIDE on the OPPOSITE side,
+   // then slide it into its new offset.
+   const spawn = off[i] - d*W;
+   row.innerHTML=svg(spawn,i);
    const nb=row.querySelector(".belt");
    nb.style.transition="none";
-   nb.offsetHeight;
-   nb.style.transition="transform 75ms linear";
-   nb.style.transform="translateX("+off[i]+"px)";
+   void nb.offsetWidth;
+   requestAnimationFrame(()=>{
+     nb.style.transition="transform 75ms linear";
+     nb.style.transform="translateX("+off[i]+"px)";
+   });
  },78);
 }
 function start(){clearInterval(timer);random();left=LIMIT;document.getElementById("time").textContent="01:30";document.getElementById("p").style.width="100%";draw();timer=setInterval(()=>{left--;document.getElementById("time").textContent=String(Math.floor(Math.max(0,left)/60)).padStart(2,"0")+":"+String(Math.max(0,left)%60).padStart(2,"0");document.getElementById("p").style.width=left/LIMIT*100+"%";if(left<=0)end("TIMP EXPIRAT")},1000)}
