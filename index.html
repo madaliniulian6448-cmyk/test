@@ -11,15 +11,21 @@ function draw(){scan.innerHTML="";g.querySelectorAll("button").forEach(x=>x.remo
 function shift(i,d){
  const row=scan.children[i], belt=row.querySelector(".belt");
  const W=row.clientWidth||476;
- const travel=d*W;
- belt.style.transition="transform 85ms ease-in";
- belt.style.transform="translateX("+(off[i]+travel)+"px)";
+ const start=off[i];
+ const exitX=start+d*W;
+ belt.style.transition="transform 75ms linear";
+ belt.style.transform="translateX("+exitX+"px)";
  setTimeout(()=>{
    off[i]+=d*48;
    if(off[i]>216)off[i]-=432;
    if(off[i]<-216)off[i]+=432;
-   row.innerHTML=svg(off[i],i);
- },90);
+   row.innerHTML=svg(off[i]-d*W,i);
+   const nb=row.querySelector(".belt");
+   nb.style.transition="none";
+   nb.offsetHeight;
+   nb.style.transition="transform 75ms linear";
+   nb.style.transform="translateX("+off[i]+"px)";
+ },78);
 }
 function start(){clearInterval(timer);random();left=LIMIT;document.getElementById("time").textContent="01:30";document.getElementById("p").style.width="100%";draw();timer=setInterval(()=>{left--;document.getElementById("time").textContent=String(Math.floor(Math.max(0,left)/60)).padStart(2,"0")+":"+String(Math.max(0,left)%60).padStart(2,"0");document.getElementById("p").style.width=left/LIMIT*100+"%";if(left<=0)end("TIMP EXPIRAT")},1000)}
 function flash(t){msg.style.display="grid";msg.innerHTML="<div>"+t+"</div>";setTimeout(()=>msg.style.display="none",450)}
